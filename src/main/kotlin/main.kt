@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Text
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,24 +28,14 @@ private const val content = """
 """
 
 fun main() = Window {
-    var lineHeight by remember { mutableStateOf(20.sp) }
+    var sliderPosition by remember { mutableStateOf(12) }
 
     MaterialTheme {
         Column(Modifier.padding(16.dp)) {
+            Text("lineHeight ${sliderPosition.sp}")
+
             Row {
-                Text("lineHeight $lineHeight")
-
-                Spacer(Modifier.width(16.dp))
-
-                Button({ lineHeight = (lineHeight.value + 1f).sp }) {
-                    Text("+sp")
-                }
-
-                Spacer(Modifier.width(16.dp))
-
-                Button({ lineHeight = (max(0f, lineHeight.value - 1f)).sp }) {
-                    Text("-sp")
-                }
+                Slider(value = sliderPosition.toFloat(), onValueChange = { sliderPosition = it.toInt() }, valueRange= 0f..140f)
             }
 
             Spacer(Modifier.height(16.dp))
@@ -55,7 +46,7 @@ fun main() = Window {
                     .width(200.dp)
                     .scrollable(rememberScrollState(), Orientation.Vertical)
             ) {
-                Text(content, style = TextStyle(lineHeight = lineHeight))
+                Text(content, style = TextStyle(lineHeight = sliderPosition.sp, fontSize = 12.sp))
                 Spacer(Modifier.height(8.dp))
                 Text("— Elon Musk", Modifier.fillMaxWidth(), style = TextStyle(textAlign = TextAlign.End))
             }
